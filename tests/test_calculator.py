@@ -8,3 +8,6 @@ def test_average_empty_list():
 
 def test_parse_price():
     assert parse_price("$3.50") == 3.5
+
+def test_parse_price_european_comma_decimal():
+    assert parse_price("3,50") == 3.5
