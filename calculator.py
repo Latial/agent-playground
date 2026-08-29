@@ -5,7 +5,10 @@ def calculate_average(numbers):
     return sum(numbers) / len(numbers)
 
 def parse_price(text):
-    return float(text.replace("$", ""))
+    cleaned = text.replace("$", "").strip()
+    if "," in cleaned and "." not in cleaned:
+        cleaned = cleaned.replace(",", ".")
+    return float(cleaned)
 
 def apply_discount(price, percent):
     return price - (price * percent / 100)
