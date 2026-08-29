@@ -16,4 +16,17 @@ def apply_discount(price, percent):
     return price - (price * percent / 100)
 
 def split_bill(total, people):
-    return round(total / people, 2)
+    """Split total into per-person shares (in cents-rounded currency units).
+
+    Naively dividing and rounding each share independently can make the
+    shares fail to add back up to the original total (e.g. splitting
+    $10 three ways as 3.33 each only sums to $9.99). Instead, split the
+    total in whole cents and hand out any leftover cents one at a time
+    so the shares always sum exactly to the (rounded) total.
+    """
+    if people <= 0:
+        raise ValueError("people must be greater than 0")
+    total_cents = round(total * 100)
+    base_cents, remainder_cents = divmod(total_cents, people)
+    shares_cents = [base_cents + (1 if i < remainder_cents else 0) for i in range(people)]
+    return [round(cents / 100, 2) for cents in shares_cents]
